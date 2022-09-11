@@ -29,7 +29,7 @@ DO NOT RENAME YOUR PORTS.  USE COMMENTS
 1. Source a pair of matching routers (or at least matching number of ports).  In theory this could work with different Tik routers, with 5 or 10 ports, but you'll need to conform to the port standards I'm suggesting. 
 2. Install RouterOS v7.5 and make sure the Routerboard firmware is up date.
 3. Ensure you have serial connections to both devices (or emergency network port on each)
-***4. Reset both routers using the command: (this is being reviewed)
+4. Reset both routers using the command: (this is being reviewed)
 `/file remove [find]; /system reset-configuration keep-users=no no-defaults=yes skip-backup=yes`
 5. Connect an ethernet cable between ether8 and ether8. (this and below is being reviewed)
 6. On one router, configure a basic network interface on ether1 with an IP address of your choosing. Just enough to be able to copy a file.
