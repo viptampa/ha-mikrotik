@@ -1,45 +1,24 @@
-# ha-mikrotik (Tested stable)
-High availability code for Mikrotik routers
+# ha-mikrotik 
+HA Scripting code for Mikrotik routers - v7
 
-# Status: December 10th 2019
-**RouterOS 6.44.6** is the only version that the author runs and tests with as of now. Anything newer is unknown and not recommended until tested extensively. Do not just upgrade RouterOS expecting it to work, Mikrotik has broken a series of features that ha-mikrotik relies on at various points in time. If you are not comfortable testing new versions that make break your entire setup, wait for the author or another party to confirm compatibility.
-
-This has been tested stable across 6 different pairs of CCR1009s for over a year, there have been multiple adminstrative failover events and a few cases of hardware failovers. Please ensure you are using compatible hardware, RouterOS, and ha-mikrotik releases.
-
-# Warning
-Please do not test this on production routers. This should be tested in a lab setup with complete out of band serial access.
-This was developed on the CCR1009-8g-1s-1s+ and is in use in our production environment. Proceed at your own risk, the code can potentionally wipe out 
-all of your configuration and files on your device.
-
-Extensive documentation is still needed. This is being delivered as a proof of concept.
-You will need to do a bit of code reading and testing to figure out how it works.
-
-# Issues
-The #1 issue is a race condition during the startup of the secondary after it gets an updated configuration. It needs to quickly disable all of the interfaces
-so that it doesn't end up taking traffic (MACs are cloned) from the active router. If you use spanning tree on your switches, it is likely that this
-will happen fast enough and the Layer2/3 won't have time to come up and cause issues. Test this very carefully, you will get very strange results if your ports
-start forwarding instantly from your upstream switch.
+# Status: September 10th 2022
+**Reviving this project as a fork and starting with v7.5** - Download at your own risk.  Nothing has been tested yet. 
 
 # Concept
-Using a dedicated interface, VRRP, scripts, and backups, we can make a pair of Mikrotik routers highly available.
+Using a dedicated interface, VRRP, scripts, and backups, we can make a pair of Mikrotik routers highly available. 
 Configuration and files are actively synchronized to the standby and the standby remains ready to takeover when the VRRP heartbeat fails.
+In my case, my 
 
-# Hardware originally developed for
-Pair of CCR1009-8g-1s-1s+
-RouterOS v6.33.5
-Routerboard firmware 3.27
-Bootstrapped from complete erased routers and then config built up once HA installed.
-
-# Video demonstrating/explaining ha-mikrotik by The Network Berg
-[MIkrotik - REAL HA Configuration](https://www.youtube.com/watch?v=GEef9P8wwxs)
+# Video demonstrating/explaining ha-mikrotik by The Network Berg (2019 version)
+[Mikrotik - REAL HA Configuration](https://www.youtube.com/watch?v=GEef9P8wwxs)
 
 # Installing
-1. Source a pair of matching routers, ideally CCR1009-8g-1s-1s+.
-2. Install RouterOS v6.44.6 and make sure the Routerboard firmware is up date.
-3. Ensure you have serial connections to both devices.
-4. Reset both routers using the command:
+1. Source a pair of matching routers (or at least matching number of ports).  In theory this could work with different Tik routers, with 5 or 10 ports, but you'll need to conform to the port standards I'm suggesting. 
+2. Install RouterOS v7.5 and make sure the Routerboard firmware is up date.
+3. Ensure you have serial connections to both devices (or emergency network port on each)
+***4. Reset both routers using the command: (this is being reviewed)
 `/file remove [find]; /system reset-configuration keep-users=no no-defaults=yes skip-backup=yes`
-5. Connect an ethernet cable between ether8 and ether8.
+5. Connect an ethernet cable between ether8 and ether8. (this and below is being reviewed)
 6. On one router, configure a basic network interface on ether1 with an IP address of your choosing. Just enough to be able to copy a file.
 7. Upload HA_init.rsc and import it:
 `/import HA_init.rsc`
