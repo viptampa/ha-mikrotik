@@ -31,8 +31,8 @@ Concept of how HA is expected to work.  Assuming this is used for SMB where the 
 
 Design Notes:
  There will be a primary router and secondary router.   
- - ISP1 will use DHCP. 
- - ISP2 will assume it is DHCP as well.  
+ - ISP1 will use DHCP.  (your modem will need to have 2 active ports or will need to feed into a switch to split into the routers)
+ - ISP2 will assume it is DHCP as well. (same as above) 
  - HA Link use an APIPA (Automatic Private IP Addressing).  R1 ether3 - 169.254.0.1/30 - R2 ether3 - 169.254.0.2/30.  This is an unrouted network and should work fine.  
  - I use ether4 to connect to my pc on the R1, so which ever network you want to use on this.  For this example I'll use 192.168.199.1/24 for this interface. 
  - Emergency network will be 192.168.89.1/24. 
